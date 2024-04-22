@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <h1 class="mt-4 mb-4">Tus Ingresos</h1>
+  <table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Descripción</th>
+        <th scope="col">Monto</th>
+        <th scope="col">Fecha de Ingreso</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ingreso in ingresos %}
+        <tr>
+          <td>{{ ingreso.descripcion }}</td>
+          <td>{{ ingreso.monto }}</td>
+          <td>{{ ingreso.fechaIngreso }}</td>
+          <td>
+            <a href="{% url 'actualizar_ingreso' ingreso.id %}" class="btn btn-sm btn-primary btn-block">Actualizar</a>
+            <a href="{% url 'eliminar_ingreso' ingreso.id %}" class="btn btn-sm btn-danger btn-block">Eliminar</a>            
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="mt-4">Total monto ingresos: {{ total_ingresos }}</p>
+  <a href="{% url 'agregar_ingreso' %}" class="btn btn-success">Agregar Ingreso</a>
+</div>
+{% endblock %}

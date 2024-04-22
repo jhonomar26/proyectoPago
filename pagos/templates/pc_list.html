@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{{valor}}
+
+<p>{{Prueba}}</p>  
+<form id="complete-form" method="post" action="{% url 'armar_pc' %}" onsubmit="return handleFormSubmit()">
+  {% csrf_token %}
+
+    <div class="title-container">
+        <h2>Componentes</h2>
+        <img src="../static/images/cpu2.webp" alt="Descripción de la imagen">
+    </div>
+
+    <div class="form-container">
+
+        <div class="left-column">
+            <!-- Campos del formulario de componentes -->
+            <label style="font-family:'Brush Script MT', cursive; font-size: 28px;" for="{{ componentes_form.tarjeta_madre.id_for_label }}">Tarjeta madre</label>
+            <div class="component-container" style="width: 300px; height: 150px;">
+                {{ componentes_form.tarjeta_madre }}
+            </div> 
+            
+
+            <label style="font-family:'Brush Script MT', cursive; font-size: 28px;" for="{{ componentes_form.procesador.id_for_label }}">Procesador</label>
+            <div class="component-container" style="width: 300px; height: 150px;">
+                {{ componentes_form.procesador }}
+            </div>
+
+            <label style="font-family:'Brush Script MT', cursive; font-size: 28px;" for="{{ componentes_form.memoria_ram.id_for_label }}">Memoria RAM</label>
+            <div class="component-container" style="width: 300px; height: 150px;">
+                {{ componentes_form.memoria_ram }}
+            </div>
+
+            <label style="font-family:'Brush Script MT', cursive; font-size: 28px;" for="{{ componentes_form.tarjeta_grafica.id_for_label }}">Tarjeta gráfica</label>
+            <div class="component-container" style="width: 300px; height: 150px;">
+                {{ componentes_form.tarjeta_grafica }}
+            </div>
+        </div>
+
+        <div class="right-column">
+            <!-- Campos del formulario de precio -->
+            <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="precio_form">Precio:</label>
+            <input type="number" name="precio_form" id="precio_form" title="Ingrese un número entero" style="width: 380px; height: 20px; text-align: center;" onclick="borrarContenido('precio_form')" value='0'>
+
+            <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="gama">Gama:</label>
+            <div id="gama-container" class="non-editable-container"style="width: 385px; height: 25px; text-align: center;">{{ gama_value }}</div>
+
+            <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="precio">Precio:</label>
+            <div id="precio-container" class="non-editable-container" style="width: 385px; height: 25px; text-align: center;">{{ precio_value }}</div>
+
+            <br />
+            <br />
+        </div>
+{% comment %} <<<<<<< HEAD {% endcomment %}
+        <input type="submit" value="Guardar" class="save-button">
+    </div>
+
+{% comment %} ======= {% endcomment %}
+
+        <input type="submit" value="Guardar" class="save-button">
+    </div>
+   
+ 
+{% comment %} >>>>>>> 9bc003bf94b76f2d71ea3583137bdc0f3e50acc0 {% endcomment %}
+</form>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Al cambiar la selección de la tarjeta madre
+        $('#id_tarjeta_madre').change(function() {
+            fieldName = "tarjeta_madre";  // Identificador único del componente
+            selectedValue = $(this).val();
+            $('#miFormulario').submit(); // Envía el formulario cuando cambie el valor de la tarjeta madre
+            {% comment %} alert('Se ha cambiado la selección de ' + fieldName + ':'+ selectedValue); {% endcomment %}
+    
+            // Enviar datos al servidor utilizando AJAX
+            $.ajax({
+                type: 'POST',
+                url: '/pc/',
+                data: {
+                    field_name: "tarjeta_madre",
+                    selected_value: selectedValue,
+                    csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(),
+                },
+                success: function(data) {
+                    alert('Respuesta del servidor:', data);
+                }, 
+                error: function(xhr, status, error) {
+                    console.error('Error en la solicitud AJAX:', error);
+                }
+            });
+        });
+    
+        // Repite el proceso para los demás campos del formulario
+        // ...
+    
+        // Puedes agregar eventos adicionales según sea necesario
+    });
+    
+</script>
+
+
+
+<script>
+    function borrarContenido(idCampo) {
+        document.getElementById(idCampo).value = '';
+    }
+</script>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/stylepc.css' %}" />
+
+<style>
+    .form-container {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px;
+    }
+
+    .title-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+        margin-top: 20px;
+        position: relative;
+        left: 85px;
+    }
+
+    .title-container h2 {
+        margin-right: 20px;
+    }
+
+    .title-container img {
+        
+        height: auto;
+        width: 75px;
+        height: 75px;
+    }
+
+    .left-column {
+        position: relative;
+        right: 150px;
+        width: 65%;
+        box-sizing: border-box;
+        margin-right: 20px;
+    }
+
+    .component-container {
+        width: 100%;
+        height: 10px;
+        box-sizing: border-box;
+        margin-bottom: -100px; /* Ajusta según tus necesidades */
+    }
+
+    .right-column {
+        width: 45%;
+        box-sizing: border-box;
+    }
+
+    .non-editable-container {
+        width: 100%;
+        height: 25px;
+        text-align: center;
+        padding: 5px;
+        border: 1px solid rgb(0, 0, 0);
+        box-sizing: border-box;
+        display: inline-block;
+    }
+
+    .save-button {
+        margin-top: 20px;
+        width: 100px; /* Ajusta según tus necesidades */
+        height: 30px; /* Ajusta según tus necesidades */
+        position: relative;
+        top: 400px;
+        right: 270px;
+    }
+</style>
+{% endblock %}
+
+

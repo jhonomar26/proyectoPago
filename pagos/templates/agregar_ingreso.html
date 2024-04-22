@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="mt-4 mb-4">Agregar Ingreso</h2>
+  <form method="post" class="needs-validation" novalidate>
+    {% csrf_token %}
+    <div class="form-group">
+      {{ form.descripcion.label_tag }}
+      {{ form.descripcion }}
+      <div class="invalid-feedback">
+        Por favor ingresa una descripción.
+      </div>
+    </div>
+    <div class="form-group">
+      {{ form.monto.label_tag }}
+      {{ form.monto }}
+      <div class="invalid-feedback">
+        Por favor ingresa un monto válido.
+      </div>
+    </div>
+    <div class="form-group">
+      {{ form.fechaIngreso.label_tag }}
+      {{ form.fechaIngreso }}
+      <div class="invalid-feedback">
+        Por favor ingresa una fecha válida.
+      </div>
+    </div>
+    <div class="form-group">
+      {{ form.categoria.label_tag }}
+      {{ form.categoria }}
+      <div class="invalid-feedback">
+        Por favor ingresa una fecha válida.
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar</button>
+  </form>
+</div>
+{% endblock %}

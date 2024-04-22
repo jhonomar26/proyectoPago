@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h1 style="text-align: center;">Registrarse: </h1>
+    <script>alert({{error}})</script>
+    {{error}}
+    <form method="post" action="{% url 'signup' %}" class="registration-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary" >Registrarse</button>
+  </form>
+{% endblock %}
