@@ -1,9 +1,39 @@
 {% extends 'base.html' %}
+
 {% block content %}
-  <h2>Actualizar Ingreso</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Actualizar</button>
-  </form>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card mt-4">
+          <div class="card-header">
+            <h2 class="card-title">Actualizar Ingreso</h2>
+          </div>
+          <div class="card-body">
+            <form method="post">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="id_fechaIngreso">Fecha de Ingreso:</label>
+                <!-- Campo visible para mostrar la fecha -->
+                <input type="text" class="form-control" name="fechaIngreso" value="{{ form.instance.fechaIngreso }}" readonly />
+              </div>
+
+              <div class="form-group">
+                <label for="id_monto">Monto:</label>
+                {{ form.monto }}
+              </div>
+              <div class="form-group">
+                <label for="id_categoria">Categoría:</label>
+                {{ form.categoria }}
+              </div>
+              <div class="form-group">
+                <label for="id_descripcion">Descripción:</label>
+                {{ form.descripcion }}
+              </div>
+              <button type="submit" class="btn btn-primary">Actualizar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

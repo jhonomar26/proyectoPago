@@ -4,12 +4,43 @@
 {% block content %}
 <div class="container">
   <h1 class="mt-4 mb-4">Tus Ingresos</h1>
+
+  <!-- Formulario de filtro por fecha y categoría -->
+  <form method="GET" action="">
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="id_fecha_inicio">Fecha de inicio:</label>
+        <input type="date" class="form-control" id="id_fecha_inicio" name="fecha_inicio" value="{{ request.GET.fecha_inicio }}" />
+      </div>
+      <div class="form-group col-md-3">
+        <label for="id_fecha_fin">Fecha de fin:</label>
+        <input type="date" class="form-control" id="id_fecha_fin" name="fecha_fin" value="{{ request.GET.fecha_fin }}" />
+      </div>
+      <div class="form-group col-md-3">
+        <label for="id_categoria">Categoría:</label>
+        <select class="form-control" id="id_categoria" name="categoria">
+          <option value="" {% if not request.GET.categoria %}selected{% endif %}>Seleccione una categoría</option>
+          {% for cat in categorias %}
+            <option value="{{ cat.categoria }}" {% if request.GET.categoria == cat.categoria %}selected{% endif %}>
+              {{ cat.categoria }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group col-md-2">
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Tabla de ingresos -->
   <table class="table table-striped">
     <thead class="thead-dark">
       <tr>
         <th scope="col">Descripción</th>
         <th scope="col">Monto</th>
         <th scope="col">Fecha de Ingreso</th>
+        <th scope="col">Categoría</th>
         <th scope="col">Acciones</th>
       </tr>
     </thead>
@@ -19,13 +50,16 @@
           <td>{{ ingreso.descripcion }}</td>
           <td>{{ ingreso.monto }}</td>
           <td>{{ ingreso.fechaIngreso }}</td>
+          <td>{{ ingreso.categoria }}</td>
           <td>
             <a href="{% url 'actualizar_ingreso' ingreso.id %}" class="btn btn-sm btn-primary btn-block">Actualizar</a>
-            <a href="{% url 'eliminar_ingreso' ingreso.id %}" class="btn btn-sm btn-danger btn-block">Eliminar</a>            
+            <a href="{% url 'eliminar_ingreso' ingreso.id %}" class="btn btn-sm btn-danger btn-block">Eliminar</a>
+          </td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
+
   <p class="mt-4">Total monto ingresos: {{ total_ingresos }}</p>
   <a href="{% url 'agregar_ingreso' %}" class="btn btn-success">Agregar Ingreso</a>
 </div>
